@@ -1,0 +1,180 @@
+/* --- Layer stacking (see Phase 1 Task 1 decision) --- */
+#wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: #1e1e2e;
+  background-size: cover;
+  background-position: center;
+}
+
+#icons {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-height: calc(100vh - var(--chrome-height) - 32px);
+}
+
+/* Phase 0's window.css sets #app { position: fixed; inset: 0 }.
+   Make the empty area click-through so icons/context-menu below still receive events;
+   real window frames opt back in. */
+#app {
+  z-index: 100;
+  pointer-events: none;
+}
+#app .window {
+  pointer-events: auto;
+}
+
+#taskbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--chrome-height);
+  padding: 0 8px;
+  background: var(--chrome-bg);
+  border-top: 1px solid var(--chrome-border);
+}
+
+#statusbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: var(--chrome-height);
+  padding: 0 12px;
+  background: var(--chrome-bg);
+  border-bottom: 1px solid var(--chrome-border);
+  border-left: 1px solid var(--chrome-border);
+  border-bottom-left-radius: 6px;
+  font-size: 12px;
+}
+
+/* --- Desktop icons --- */
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 76px;
+  padding: 8px 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--desktop-text);
+  cursor: pointer;
+  font: inherit;
+}
+.desktop-icon:hover,
+.desktop-icon:focus-visible {
+  background: #ffffff14;
+  border-color: var(--chrome-border);
+  outline: none;
+}
+.desktop-icon__glyph {
+  font-size: 22px;
+  line-height: 1;
+}
+.desktop-icon__label {
+  font-size: 12px;
+}
+
+/* --- Taskbar items --- */
+.taskbar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  background: #ffffff10;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--desktop-text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+}
+.taskbar-item:hover {
+  background: #ffffff20;
+}
+.taskbar-item--focused {
+  border-color: var(--accent);
+  background: #ffffff24;
+}
+.taskbar-item--minimized {
+  opacity: 0.6;
+}
+
+/* --- Status bar --- */
+.statusbar__availability {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.statusbar__blip {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #a6e3a1;
+}
+.statusbar__clock {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Context menu --- */
+.context-menu {
+  position: fixed;
+  z-index: 2000;
+  min-width: 200px;
+  padding: 4px;
+  background: #1e1e2e;
+  border: 1px solid var(--chrome-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+}
+.context-menu__item {
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: var(--desktop-text);
+}
+.context-menu__label {
+  padding: 6px 10px;
+  color: #a6adc8;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.context-menu__thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 6px 10px;
+}
+.context-menu__thumb {
+  aspect-ratio: 16 / 9;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  padding: 0;
+}
+.context-menu__thumb:hover,
+.context-menu__thumb:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}

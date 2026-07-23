@@ -1,0 +1,32 @@
+:root {
+  --desktop-text: #cdd6f4;
+  --chrome-bg: #181825ee;
+  --chrome-border: #313244;
+  --accent: #89b4fa;
+  --chrome-height: 32px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: ui-monospace, "JetBrains Mono", "Fira Code", monospace;
+  color: var(--desktop-text);
+}
+
+#desktop {
+  position: fixed;
+  inset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
