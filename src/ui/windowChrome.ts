@@ -84,7 +84,10 @@ function buildWindowElement(
   content.className = "window__content";
   renderContent(win, content);
 
-  el.append(titlebar, content);
+  const body = document.createElement("div");
+  body.className = "window__body";
+  body.append(titlebar, content);
+  el.append(body);
 
   for (const handle of RESIZE_HANDLES) {
     const handleEl = document.createElement("div");
