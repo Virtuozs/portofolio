@@ -69,5 +69,5 @@ initWallpaper(wallpaperRoot, WALLPAPERS);
 mountContextMenu(desktopRoot, WALLPAPERS, (path) => applyWallpaper(wallpaperRoot!, path));
 
 manager.subscribe(render);
-manager.open("whoami"); // auto-open on load, per spec §4 (preserved from Phase 0)
+manager.open("whoami"); // auto-open on load
 render();

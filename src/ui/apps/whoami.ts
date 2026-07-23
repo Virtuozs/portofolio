@@ -1,7 +1,7 @@
 import type { ContentRenderer } from "../windowChrome.ts";
 
-// [CONTENT GAP] Placeholder whoami content - derived from spec §1, NOT the owner's
-// real single-page copy (which is not in this repo). Replace before deploy.
+// [CONTENT GAP] Placeholder whoami content - NOT the owner's real single-page
+// copy (which is not in this repo). Replace before deploy.
 const LOGO = ` .--.
 |o_o |
 |:_/ |

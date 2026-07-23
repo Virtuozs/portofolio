@@ -2,7 +2,7 @@ import type { ContentRenderer } from "../windowChrome.ts";
 import { canSend, buildMailtoUrl } from "../../logic/mailValidation.ts";
 
 // [CONTENT GAP] Placeholder recipient - replace with the site owner's real address
-// before deploy (spec §6.3). Never send from the page itself; mailto: only.
+// before deploy. Never send from the page itself; mailto: only.
 const OWNER_EMAIL = "owner@example.com";
 
 export const renderMail: ContentRenderer = (_win, el) => {
@@ -39,7 +39,7 @@ export const renderMail: ContentRenderer = (_win, el) => {
     });
     // Hand off to the visitor's own mail client. The page never sends email.
     window.location.href = url;
-    // Inline confirmation so the interaction is never a silent no-op (spec §6.3).
+    // Inline confirmation so the interaction is never a silent no-op.
     confirm.textContent = "Opening your mail client...";
   });
 

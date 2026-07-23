@@ -62,7 +62,7 @@ describe("getVisibleEntries inside a project", () => {
     expect(entries).toHaveLength(2);
   });
 
-  it("omits a missing image entirely - no placeholder row (spec §6.4)", () => {
+  it("omits a missing image entirely - no placeholder row", () => {
     const entries = getVisibleEntries({ path: ["006"] }, projects);
     expect(entries).toHaveLength(1);
     expect((entries[0] as { kind: string }).kind).toBe("readme");

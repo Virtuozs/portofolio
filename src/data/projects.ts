@@ -12,9 +12,8 @@ export interface ProjectEntry {
   files: ProjectFile[];
 }
 
-// #007 README is authored from spec §7 (factual). It uses only the Markdown
-// subset parseMarkdown() supports: headings, paragraphs, bold - NO list syntax,
-// since the parser does not implement lists (spec §6.4 scope).
+// Uses only the Markdown subset parseMarkdown() supports: headings, paragraphs,
+// bold - NO list syntax, since the parser does not implement lists.
 const README_007 = `# Multi-Source Oil & Gas ETL Pipeline with Dashboard
 
 **Status:** shipped
@@ -36,10 +35,10 @@ Production volume trends by state and region, rendered with a Plotly/Streamlit
 dashboard.
 `;
 
-// [CONTENT GAP] #001-#006 README bodies are placeholder text - the original
-// brainstorm content that spec §7 refers to does not exist in this repo. Replace
-// with the site owner's real project descriptions before deploy. Do NOT present
-// any of this as a factual description of real work.
+// [CONTENT GAP] #001-#006 README bodies are placeholder text - the site owner's
+// real project descriptions are not yet available. Replace with the owner's
+// real project descriptions before deploy. Do NOT present any of this as a
+// factual description of real work.
 function placeholderReadme(folderName: string): string {
   return `# ${folderName}
 
@@ -82,7 +81,7 @@ export const PROJECTS: ProjectEntry[] = [
     ],
   },
   {
-    // [CONTENT GAP] intentionally has NO files, to exercise spec §6.4's
+    // [CONTENT GAP] intentionally has NO files, to exercise the
     // "no README -> folder appears empty" empty-state rule end to end. Add a
     // README/image here once the owner supplies content.
     id: "005",

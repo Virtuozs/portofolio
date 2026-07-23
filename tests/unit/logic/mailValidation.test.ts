@@ -21,7 +21,7 @@ describe("buildMailtoUrl", () => {
     expect(url).toBe("mailto:owner@example.com?subject=Job%20offer&body=Hi%20there");
   });
 
-  it("omits the body when it is empty (body is optional per spec §6.3)", () => {
+  it("omits the body when it is empty (body is optional)", () => {
     const url = buildMailtoUrl({ to: "owner@example.com", subject: "Ping", body: "" });
     expect(url).toBe("mailto:owner@example.com?subject=Ping");
   });

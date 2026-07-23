@@ -8,7 +8,7 @@ export const renderPackages: ContentRenderer = (_win, el) => {
   el.classList.add("packages");
   const lines = generatePackageLines(PROJECTS);
 
-  // Reveal line by line, simulating the command running live (spec §6.2).
+  // Reveal line by line, simulating the command running live.
   // This runs once per fresh mount = once per open-from-closed. Restore from
   // minimize reuses the existing DOM node and never re-enters here.
   let index = 0;
