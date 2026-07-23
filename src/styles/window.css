@@ -1,0 +1,149 @@
+:root {
+  --titlebar-height: 32px;
+  --resize-handle-size: 6px;
+  --window-bg: #1e1e2e;
+  --window-border: #313244;
+  --titlebar-bg: #181825;
+  --titlebar-bg-focused: #313244;
+  --text-color: #cdd6f4;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--window-bg);
+  border: 1px solid var(--window-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Clipping lives on this inner wrapper, not .window itself, so the resize
+   handles below (positioned with negative offsets to straddle the border)
+   are not clipped by overflow: hidden. */
+.window__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.window__titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  background: var(--titlebar-bg);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.window--focused .window__titlebar {
+  background: var(--titlebar-bg-focused);
+}
+
+.window__title {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.window__minimize,
+.window__close {
+  width: 16px;
+  height: 16px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+}
+
+.window__minimize {
+  background: #f9e2af;
+}
+
+.window__close {
+  background: #f38ba8;
+}
+
+.window__content {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  color: var(--text-color);
+}
+
+.window__resize-handle {
+  position: absolute;
+  touch-action: none;
+}
+
+.window__resize-handle--n,
+.window__resize-handle--s {
+  left: var(--resize-handle-size);
+  right: var(--resize-handle-size);
+  height: var(--resize-handle-size);
+  cursor: ns-resize;
+}
+.window__resize-handle--n {
+  top: calc(var(--resize-handle-size) / -2);
+}
+.window__resize-handle--s {
+  bottom: calc(var(--resize-handle-size) / -2);
+}
+
+.window__resize-handle--e,
+.window__resize-handle--w {
+  top: var(--resize-handle-size);
+  bottom: var(--resize-handle-size);
+  width: var(--resize-handle-size);
+  cursor: ew-resize;
+}
+.window__resize-handle--e {
+  right: calc(var(--resize-handle-size) / -2);
+}
+.window__resize-handle--w {
+  left: calc(var(--resize-handle-size) / -2);
+}
+
+.window__resize-handle--ne,
+.window__resize-handle--nw,
+.window__resize-handle--se,
+.window__resize-handle--sw {
+  width: 12px;
+  height: 12px;
+}
+.window__resize-handle--ne {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+.window__resize-handle--nw {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
+}
+.window__resize-handle--se {
+  bottom: -6px;
+  right: -6px;
+  cursor: nwse-resize;
+}
+.window__resize-handle--sw {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}

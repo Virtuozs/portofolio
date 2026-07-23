@@ -1,60 +1,32 @@
-import './style.css'
-import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.ts'
+import "./styles/window.css";
+import { WindowManager } from "./logic/windowManager.ts";
+import { APP_CONFIGS } from "./data/apps.ts";
+import { renderWindows, type ContentRenderer } from "./ui/windowChrome.ts";
+import { createDragResizeController } from "./ui/dragResize.ts";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+const root = document.getElementById("app");
+if (!root) throw new Error("#app root element missing");
 
-<div class="ticks"></div>
+const manager = new WindowManager(APP_CONFIGS);
+const controller = createDragResizeController(manager);
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+const renderPlaceholderContent: ContentRenderer = (win, el) => {
+  el.textContent = `${win.appId} content goes here (wired in Phase 2)`;
+};
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+function render(): void {
+  renderWindows(root!, manager.getWindows(), renderPlaceholderContent, {
+    onTitlebarPointerDown: controller.onTitlebarPointerDown,
+    onResizeHandlePointerDown: controller.onResizeHandlePointerDown,
+    onFocus: (id) => manager.focus(id),
+    onClose: (id) => manager.close(id),
+    onMinimize: (id) => manager.minimize(id),
+  });
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+manager.subscribe(render);
+manager.open("whoami");
+render();
+
+// TEMPORARY - remove once Phase 1 desktop icons exist
+(window as unknown as { openApp: typeof manager.open }).openApp = manager.open.bind(manager);
