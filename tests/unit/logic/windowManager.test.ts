@@ -97,3 +97,80 @@ describe("WindowManager.subscribe", () => {
     expect(calls).toEqual([]);
   });
 });
+
+describe("WindowManager focus and z-index", () => {
+  let manager: WindowManager;
+
+  beforeEach(() => {
+    manager = new WindowManager(configs);
+  });
+
+  it("assigns zIndex from array position, back to front", () => {
+    manager.open("whoami");
+    manager.open("mail");
+    const windows = manager.getWindows();
+    expect(windows.find((w) => w.id === "whoami")!.zIndex).toBe(0);
+    expect(windows.find((w) => w.id === "mail")!.zIndex).toBe(1);
+  });
+
+  it("marks only the last window in the array as focused", () => {
+    manager.open("whoami");
+    manager.open("mail");
+    const windows = manager.getWindows();
+    expect(windows.find((w) => w.id === "whoami")!.isFocused).toBe(false);
+    expect(windows.find((w) => w.id === "mail")!.isFocused).toBe(true);
+  });
+
+  it("moves a window to the end of the array and reassigns z-index on focus", () => {
+    manager.open("whoami");
+    manager.open("mail");
+    manager.focus("whoami");
+
+    const windows = manager.getWindows();
+    expect(windows.map((w) => w.id)).toEqual(["mail", "whoami"]);
+    expect(windows.find((w) => w.id === "whoami")!.zIndex).toBe(1);
+    expect(windows.find((w) => w.id === "whoami")!.isFocused).toBe(true);
+  });
+
+  it("re-opening an already-open window focuses it instead of duplicating", () => {
+    manager.open("whoami");
+    manager.open("mail");
+    manager.open("whoami");
+
+    const windows = manager.getWindows();
+    expect(windows).toHaveLength(2);
+    expect(windows.map((w) => w.id)).toEqual(["mail", "whoami"]);
+  });
+});
+
+describe("WindowManager.minimize", () => {
+  let manager: WindowManager;
+
+  beforeEach(() => {
+    manager = new WindowManager(configs);
+  });
+
+  it("sets state to minimized without removing the window from getWindows()", () => {
+    manager.open("whoami");
+    manager.minimize("whoami");
+    const windows = manager.getWindows();
+    expect(windows).toHaveLength(1);
+    expect(windows[0].state).toBe("minimized");
+  });
+
+  it("clears isFocused on minimize", () => {
+    manager.open("whoami");
+    manager.minimize("whoami");
+    expect(manager.getWindows()[0].isFocused).toBe(false);
+  });
+
+  it("re-opening a minimized window restores it to open and focuses it", () => {
+    manager.open("whoami");
+    manager.minimize("whoami");
+    manager.open("whoami");
+
+    const windows = manager.getWindows();
+    expect(windows[0].state).toBe("open");
+    expect(windows[0].isFocused).toBe(true);
+  });
+});
