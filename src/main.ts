@@ -2,6 +2,7 @@ import "./styles/base.css";
 import "./styles/window.css";
 import "./styles/desktop.css";
 import "./styles/apps.css";
+import "./styles/animations.css";
 import { WindowManager } from "./logic/windowManager.ts";
 import { APP_CONFIGS } from "./data/apps.ts";
 import { WALLPAPERS } from "./data/wallpapers.ts";
@@ -19,6 +20,7 @@ import { renderMail } from "./ui/apps/mail.ts";
 import { createProjectsRenderer } from "./ui/apps/projects.ts";
 import { renderMdViewer } from "./ui/apps/mdViewer.ts";
 import { createImageViewerRenderer } from "./ui/apps/imageViewer.ts";
+import { createWindowAnimator } from "./ui/animate.ts";
 
 const desktopRoot = document.getElementById("desktop");
 const wallpaperRoot = document.getElementById("wallpaper");
@@ -33,6 +35,7 @@ if (!desktopRoot || !wallpaperRoot || !iconsRoot || !windowsRoot || !taskbarRoot
 
 const manager = new WindowManager(APP_CONFIGS);
 const controller = createDragResizeController(manager);
+const animator = createWindowAnimator();
 
 const renderers: Record<AppId, ContentRenderer> = {
   "whoami": renderWhoami,
@@ -49,13 +52,19 @@ const renderContentForApp: ContentRenderer = (win, el) => {
 
 function render(): void {
   const windows = manager.getWindows();
-  renderWindows(windowsRoot!, windows, renderContentForApp, {
-    onTitlebarPointerDown: controller.onTitlebarPointerDown,
-    onResizeHandlePointerDown: controller.onResizeHandlePointerDown,
-    onFocus: (id) => manager.focus(id),
-    onClose: (id) => manager.close(id),
-    onMinimize: (id) => manager.minimize(id),
-  });
+  renderWindows(
+    windowsRoot!,
+    windows,
+    renderContentForApp,
+    {
+      onTitlebarPointerDown: controller.onTitlebarPointerDown,
+      onResizeHandlePointerDown: controller.onResizeHandlePointerDown,
+      onFocus: (id) => manager.focus(id),
+      onClose: (id) => manager.close(id),
+      onMinimize: (id) => manager.minimize(id),
+    },
+    animator,
+  );
   renderTaskbar(taskbarRoot!, windows, {
     onFocus: (id) => manager.focus(id),
     onMinimize: (id) => manager.minimize(id),
