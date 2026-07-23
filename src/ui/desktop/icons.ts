@@ -40,3 +40,8 @@ export function mountDesktopIcons(root: HTMLElement, onOpen: (appId: AppId) => v
     root.appendChild(button);
   }
 }
+
+export function getIconScreenRect(appId: AppId): DOMRect | null {
+  const el = document.querySelector<HTMLElement>(`.desktop-icon[data-app-id="${appId}"]`);
+  return el ? el.getBoundingClientRect() : null;
+}

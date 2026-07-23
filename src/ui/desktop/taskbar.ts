@@ -33,3 +33,8 @@ export function renderTaskbar(
     root.appendChild(button);
   }
 }
+
+export function getTaskbarEntryScreenRect(windowId: string): DOMRect | null {
+  const el = document.querySelector<HTMLElement>(`.taskbar-item[data-window-id="${windowId}"]`);
+  return el ? el.getBoundingClientRect() : null;
+}
