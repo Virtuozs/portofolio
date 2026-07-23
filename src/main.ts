@@ -27,6 +27,3 @@ function render(): void {
 manager.subscribe(render);
 manager.open("whoami");
 render();
-
-// TEMPORARY - remove once Phase 1 desktop icons exist
-(window as unknown as { openApp: typeof manager.open }).openApp = manager.open.bind(manager);
