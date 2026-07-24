@@ -20,6 +20,7 @@ export function mountStatusBar(root: HTMLElement): void {
 
   const clock = document.createElement("span");
   clock.className = "statusbar__clock";
+  clock.setAttribute("aria-hidden", "true"); // decorative; the time is not actionable
 
   const tick = () => {
     clock.textContent = formatClock(new Date());

@@ -3,6 +3,7 @@ import "./styles/window.css";
 import "./styles/desktop.css";
 import "./styles/apps.css";
 import "./styles/animations.css";
+import "./styles/a11y.css";
 import "./styles/mobile.css";
 import { WindowManager } from "./logic/windowManager.ts";
 import { APP_CONFIGS } from "./data/apps.ts";
@@ -22,6 +23,7 @@ import { createProjectsRenderer } from "./ui/apps/projects.ts";
 import { renderMdViewer } from "./ui/apps/mdViewer.ts";
 import { createImageViewerRenderer } from "./ui/apps/imageViewer.ts";
 import { createWindowAnimator } from "./ui/animate.ts";
+import { installGlobalKeyboard } from "./ui/keyboard.ts";
 import {
   renderMobile,
   isMobileViewport,
@@ -141,3 +143,9 @@ window
 
 manager.open("whoami"); // hero on both platforms
 render();
+
+// projectsBack reuses the on-screen back button's own click handler (Phase 2), so the
+// keybinding and the button share one code path instead of duplicating navigation state.
+installGlobalKeyboard(manager, () => {
+  document.querySelector<HTMLButtonElement>('.window[data-app-id="projects"] .projects__back')?.click();
+});
