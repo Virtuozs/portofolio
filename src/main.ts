@@ -3,6 +3,7 @@ import "./styles/window.css";
 import "./styles/desktop.css";
 import "./styles/apps.css";
 import "./styles/animations.css";
+import "./styles/a11y.css";
 import { WindowManager } from "./logic/windowManager.ts";
 import { APP_CONFIGS } from "./data/apps.ts";
 import { WALLPAPERS } from "./data/wallpapers.ts";

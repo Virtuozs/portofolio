@@ -53,6 +53,7 @@ export function renderWindows(
       mounted.set(win.id, el);
       root.appendChild(el);
       if (animator) animator.onOpen(el, win); // fires exactly on fresh open
+      el.focus({ preventScroll: true });
     }
     updateWindowElement(el, win, animator);
   }
@@ -67,6 +68,9 @@ function buildWindowElement(
   el.className = "window";
   el.dataset.windowId = win.id;
   el.dataset.appId = win.appId; // animate.ts reads this to find the icon on close
+  el.setAttribute("role", "dialog");
+  el.setAttribute("aria-label", win.title);
+  el.tabIndex = -1; // focusable programmatically, not in the natural tab order
   el.addEventListener("pointerdown", () => handlers.onFocus(win.id));
 
   const titlebar = document.createElement("div");
@@ -110,6 +114,7 @@ function buildWindowElement(
   for (const handle of RESIZE_HANDLES) {
     const handleEl = document.createElement("div");
     handleEl.className = `window__resize-handle window__resize-handle--${handle}`;
+    handleEl.setAttribute("aria-hidden", "true");
     handleEl.addEventListener("pointerdown", (e) => {
       e.stopPropagation();
       handlers.onResizeHandlePointerDown(win.id, handle, e);
@@ -129,6 +134,7 @@ function updateWindowElement(el: HTMLElement, win: WindowState, animator?: Windo
 
   const titleEl = el.querySelector<HTMLElement>(".window__title");
   if (titleEl) titleEl.textContent = win.title;
+  el.setAttribute("aria-label", win.title);
 
   const prev = el.dataset.lifecycle;
 
