@@ -84,12 +84,16 @@
   border-color: var(--chrome-border);
   outline: none;
 }
+/* wallpaper is random per load and cannot be contrast-guaranteed on its own,
+   so a text shadow backs both glyph and label instead of relying on color alone */
 .desktop-icon__glyph {
   font-size: 22px;
   line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.7);
 }
 .desktop-icon__label {
   font-size: 12px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.7);
 }
 
 /* --- Taskbar items --- */

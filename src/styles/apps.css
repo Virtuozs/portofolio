@@ -35,7 +35,8 @@
 .projects__row:hover { background: #313244; }
 .projects__name { flex: 1; }
 .projects__meta { color: #a6adc8; font-size: 12px; }
-.projects__empty { color: #6c7086; padding: 12px 4px; font-style: italic; }
+/* raised from #6c7086 (3.4:1 on #1e1e2e, fails AA) to #a6adc8 (7.4:1) */
+.projects__empty { color: #a6adc8; padding: 12px 4px; font-style: italic; }
 
 /* md-viewer */
 .md-viewer h1, .md-viewer h2, .md-viewer h3 { margin: 0.6em 0 0.3em; }
