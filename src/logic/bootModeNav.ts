@@ -1,6 +1,6 @@
 export type MobileView = { kind: "home" } | { kind: "app"; windowId: string };
 
-export function openAppMobile(current: MobileView, windowId: string): MobileView {
+export function openAppMobile(_current: MobileView, windowId: string): MobileView {
   return { kind: "app", windowId };
 }
 
