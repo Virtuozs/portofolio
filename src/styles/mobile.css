@@ -1,0 +1,177 @@
+/* Two sibling render surfaces live directly under <body>: Phase 1's #desktop
+   (wallpaper/icons/#app/taskbar/statusbar) and this phase's #mobile-root. The
+   media query below is the ONLY place that swaps between them. Keep the 768px
+   value in sync with MOBILE_MAX_WIDTH_PX in ui/mobile/bootMode.ts. */
+
+#mobile-root {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  #desktop {
+    display: none;
+  }
+
+  #mobile-root {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--window-bg, #1e1e2e);
+    color: var(--text-color, #cdd6f4);
+    font-size: 15px;
+  }
+}
+
+/* Thin status bar, visible in both home and app views (top of the column). */
+.mobile-statusbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 26px;
+  padding: 0 12px;
+  font-size: 12px;
+  background: var(--titlebar-bg, #181825);
+  border-bottom: 1px solid var(--window-border, #313244);
+}
+
+.mobile-availability::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #a6e3a1;
+  vertical-align: middle;
+}
+
+/* Home screen: full-bleed launcher icon grid. `display` is toggled inline by
+   bootMode.ts (grid when active, none when an app is fullscreen). */
+.mobile-home {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  align-content: start;
+  gap: 20px 12px;
+  padding: 24px 16px;
+}
+
+/* .desktop-icon is Phase 1's icon button class - mountDesktopIcons() builds
+   the same markup here, this just overrides sizing/spacing for the mobile
+   grid instead of the desktop icon grid's layout. */
+.mobile-home .desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-height: 84px;
+  padding: 8px 4px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-home .desktop-icon:active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Fullscreen app view: app bar (back + title) over a scrollable content host. */
+.mobile-appview {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-appbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 8px;
+  background: var(--titlebar-bg-focused, #313244);
+  border-bottom: 1px solid var(--window-border, #313244);
+}
+
+.mobile-back {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mobile-back:active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.mobile-apptitle {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.mobile-appcontent {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+}
+
+/* Bottom dock: currently open/minimized apps, horizontally scrollable if many. */
+.mobile-dock {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  height: 64px;
+  padding: 0 12px;
+  overflow-x: auto;
+  background: var(--titlebar-bg, #181825);
+  border-top: 1px solid var(--window-border, #313244);
+}
+
+/* .taskbar-item is Phase 1's taskbar button class - renderTaskbar() builds
+   the same markup here (see the [DECISION] in Task 4: the dock IS the
+   taskbar, remounted). taskbar-item--focused already marks whichever window
+   is current, so no separate "--current" class is needed. */
+.mobile-dock .taskbar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 48px;
+  padding: 4px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.mobile-dock .taskbar-item--focused {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-home .desktop-icon:active,
+  .mobile-back:active,
+  .mobile-dock .taskbar-item:active {
+    transition: none;
+  }
+}
