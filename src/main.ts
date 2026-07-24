@@ -21,6 +21,7 @@ import { createProjectsRenderer } from "./ui/apps/projects.ts";
 import { renderMdViewer } from "./ui/apps/mdViewer.ts";
 import { createImageViewerRenderer } from "./ui/apps/imageViewer.ts";
 import { createWindowAnimator } from "./ui/animate.ts";
+import { installGlobalKeyboard } from "./ui/keyboard.ts";
 
 const desktopRoot = document.getElementById("desktop");
 const wallpaperRoot = document.getElementById("wallpaper");
@@ -80,3 +81,9 @@ mountContextMenu(desktopRoot, WALLPAPERS, (path) => applyWallpaper(wallpaperRoot
 manager.subscribe(render);
 manager.open("whoami"); // auto-open on load
 render();
+
+// projectsBack reuses the on-screen back button's own click handler (Phase 2), so the
+// keybinding and the button share one code path instead of duplicating navigation state.
+installGlobalKeyboard(manager, () => {
+  document.querySelector<HTMLButtonElement>('.window[data-app-id="projects"] .projects__back')?.click();
+});
