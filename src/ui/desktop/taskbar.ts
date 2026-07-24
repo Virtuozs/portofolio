@@ -23,6 +23,7 @@ export function renderTaskbar(
     button.classList.toggle("taskbar-item--minimized", win.state === "minimized");
     button.dataset.windowId = win.id;
     button.textContent = win.title;
+    button.setAttribute("aria-pressed", String(win.isFocused && win.state === "open"));
 
     button.addEventListener("click", () => {
       const action = decideTaskbarClickAction(win);
